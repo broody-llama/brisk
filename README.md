@@ -22,6 +22,7 @@ Supported vendor types:
 - Vendor names are validated against an allow-list of supported characters.
 - User-provided values are XML-escaped before being written to output.
 - Length limits are enforced on vendor names to reduce abuse and malformed output risk.
+- Generated documents are wrapped in a single `<risk_management_ticket>` root element to ensure valid XML parsing.
 
 ## Tests
 

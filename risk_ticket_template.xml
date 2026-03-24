@@ -1,3 +1,4 @@
+<risk_management_ticket>
 <vendor_service_description>
 Vendor {{VENDOR_NAME}} is being evaluated as a third-party service provider to support Block business operations.
 
@@ -63,3 +64,4 @@ Comments and Discussion:
 ---
 [No comments yet. Team members can add comments here to discuss risks, controls, and implementation status.]
 </comments_section>
+</risk_management_ticket>

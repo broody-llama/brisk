@@ -128,6 +128,7 @@ def generate_ticket(vendor_name: str, vendor_type: str) -> str:
 
     return "\n".join(
         [
+            "<risk_management_ticket>",
             "<vendor_service_description>",
             f"Vendor {safe_vendor_name} is evaluated as a {vtype} provider supporting Block business operations.",
             "- Data access and integrations must be validated during onboarding.",
@@ -150,6 +151,7 @@ def generate_ticket(vendor_name: str, vendor_type: str) -> str:
             "---",
             "[No comments yet. Team members can add comments here to discuss risks, controls, and implementation status.]",
             "</comments_section>",
+            "</risk_management_ticket>",
         ]
     )
 
