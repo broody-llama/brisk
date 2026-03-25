@@ -1,28 +1,43 @@
-# Brisk Risk Ticket Toolkit
+# Brisk Risk Tracker
 
-This repo includes:
+Brisk is now a standalone internal tool with:
 
-- `risk_ticket_template.xml`: a reusable XML ticket template.
-- `generate_risk_ticket.py`: a generator that creates vendor-specific tickets by vendor type.
+- **React + Vite frontend** for assessment input and review tables.
+- **FastAPI backend** that generates risk/control tracker drafts from evidence text.
+- Optional **LLM mode** (if `OPENAI_API_KEY` is configured), with deterministic fallback.
 
-## Usage
+## Run locally
+
+### 1) Start backend API
 
 ```bash
-./generate_risk_ticket.py "Acme Vendor" saas
+python3 -m venv .venv
+source .venv/bin/activate
+pip install fastapi uvicorn
+uvicorn backend.app:app --reload --port 8000
 ```
 
-Supported vendor types:
-- `saas`
-- `payments`
-- `analytics`
-- `infrastructure`
+### 2) Start frontend
 
-## Security hardening
+In another terminal:
 
-- Vendor names are validated against an allow-list of supported characters.
-- User-provided values are XML-escaped before being written to output.
-- Length limits are enforced on vendor names to reduce abuse and malformed output risk.
-- Generated documents are wrapped in a single `<risk_management_ticket>` root element to ensure valid XML parsing.
+```bash
+npm install
+npm run dev
+```
+
+Open the local Vite URL (usually `http://localhost:5173`).
+
+## AI mode (optional)
+
+If you want Brisk to call an LLM instead of fallback extraction:
+
+```bash
+export OPENAI_API_KEY=your_key
+export OPENAI_MODEL=gpt-4.1-mini
+```
+
+Without those env vars, Brisk still works using deterministic evidence parsing.
 
 ## Tests
 
