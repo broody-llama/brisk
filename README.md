@@ -1,29 +1,11 @@
 # Brisk Risk Ticket Toolkit
 
-This repo now includes both:
+This repo includes:
 
-- A **frontend** built with Vite + React for interactive XML generation.
-- A **Python CLI** (`generate_risk_ticket.py`) for terminal-based generation.
+- `risk_ticket_template.xml`: a reusable XML ticket template.
+- `generate_risk_ticket.py`: a generator that creates vendor-specific tickets by vendor type.
 
-## Frontend (Vite + React)
-
-### Run locally
-
-```bash
-npm install
-npm run dev
-```
-
-Open the local URL shown by Vite (usually `http://localhost:5173`).
-
-### Build production assets
-
-```bash
-npm run build
-npm run preview
-```
-
-## Python CLI
+## Usage
 
 ```bash
 ./generate_risk_ticket.py "Acme Vendor" saas
