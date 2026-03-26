@@ -6,6 +6,7 @@ Brisk is now a standalone internal tool with:
 - **FastAPI backend** that generates risk/control tracker drafts from evidence text.
 - Optional **LLM mode** (if `OPENAI_API_KEY` is configured), with deterministic fallback.
 - **Autonomous vendor research mode** that can gather public vendor evidence from web sources when no evidence is pasted.
+- **Vendor-specific risk profiles** (currently including Claude/Anthropic channel workflows and Vertex-style AI infrastructure) to improve draft granularity.
 
 ## Run locally
 

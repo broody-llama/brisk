@@ -6,6 +6,7 @@ import html
 import ipaddress
 import re
 import socket
+import urllib.error
 import urllib.parse
 import urllib.request
 from dataclasses import dataclass
@@ -18,6 +19,13 @@ class SourceSnippet:
     title: str
     url: str
     snippet: str
+
+
+class SafeRedirectHandler(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        if not _is_safe_url(newurl):
+            raise urllib.error.URLError("Blocked unsafe redirect target")
+        return super().redirect_request(req, fp, code, msg, headers, newurl)
 
 
 def _is_safe_url(url: str) -> bool:
@@ -41,12 +49,16 @@ def _fetch(url: str, timeout: int = 8) -> str:
     if not _is_safe_url(url):
         return ""
     req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
-    with urllib.request.urlopen(req, timeout=timeout) as resp:  # nosec B310
+    opener = urllib.request.build_opener(SafeRedirectHandler())
+    with opener.open(req, timeout=timeout) as resp:  # nosec B310
+        final_url = resp.geturl()
+        if not _is_safe_url(final_url):
+            return ""
         content_type = (resp.headers.get("Content-Type") or "").lower()
         if "text/html" not in content_type:
             return ""
         raw = resp.read(250_000)
-    return raw.decode("utf-8", errors="ignore")
+        return raw.decode("utf-8", errors="ignore")
 
 
 def _strip_html(value: str) -> str:

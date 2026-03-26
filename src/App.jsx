@@ -136,6 +136,7 @@ function App() {
                   <tr>
                     <th>ID</th>
                     <th>Title</th>
+                    <th>Description</th>
                     <th>Severity</th>
                     <th>Potential Impact</th>
                   </tr>
@@ -145,6 +146,7 @@ function App() {
                     <tr key={risk.risk_id}>
                       <td>{risk.risk_id}</td>
                       <td>{risk.title}</td>
+                      <td>{risk.description}</td>
                       <td>{risk.severity}</td>
                       <td>{risk.potential_impact}</td>
                     </tr>
@@ -160,6 +162,7 @@ function App() {
                   <tr>
                     <th>ID</th>
                     <th>Control</th>
+                    <th>Description</th>
                     <th>Status</th>
                     <th>Deploy</th>
                     <th>Related Risk(s)</th>
@@ -170,6 +173,7 @@ function App() {
                     <tr key={control.control_id}>
                       <td>{control.control_id}</td>
                       <td>{control.control_name}</td>
+                      <td>{control.description}</td>
                       <td>
                         <select
                           value={control.status}
@@ -189,6 +193,17 @@ function App() {
                 </tbody>
               </table>
             </section>
+
+            {!!assessment.open_questions?.length && (
+              <section>
+                <h2>Open questions</h2>
+                <ul>
+                  {assessment.open_questions.map((question) => (
+                    <li key={question}>{question}</li>
+                  ))}
+                </ul>
+              </section>
+            )}
           </>
         )}
       </section>
