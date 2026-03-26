@@ -152,7 +152,12 @@ def _attach_risk_links(controls: list[dict[str, Any]]) -> None:
             control["related_risk_ids"] = ["R-001"]
 
 
-def generate_assessment(vendor_name: str, vendor_type: str, evidence_text: str) -> dict[str, Any]:
+def generate_assessment(
+    vendor_name: str,
+    vendor_type: str,
+    evidence_text: str,
+    researched_sources: list[dict[str, str]] | None = None,
+) -> dict[str, Any]:
     controls = _parse_control_rows(evidence_text)
     _attach_risk_links(controls)
     risks = _infer_risks_from_controls(controls)
@@ -186,15 +191,21 @@ def generate_assessment(vendor_name: str, vendor_type: str, evidence_text: str) 
             "Status values were inferred from submitted evidence text.",
             "Control ownership defaults to Unassigned until business owner assignment.",
         ],
+        "sources": researched_sources or [],
     }
 
 
-def maybe_generate_with_llm(vendor_name: str, vendor_type: str, evidence_text: str) -> dict[str, Any]:
+def maybe_generate_with_llm(
+    vendor_name: str,
+    vendor_type: str,
+    evidence_text: str,
+    researched_sources: list[dict[str, str]] | None = None,
+) -> dict[str, Any]:
     """Use LLM if configured; fallback to deterministic generation."""
     api_key = os.getenv("OPENAI_API_KEY")
     model = os.getenv("OPENAI_MODEL", "gpt-4.1-mini")
     if not api_key:
-        return generate_assessment(vendor_name, vendor_type, evidence_text)
+        return generate_assessment(vendor_name, vendor_type, evidence_text, researched_sources=researched_sources)
 
     try:
         from openai import OpenAI  # type: ignore
@@ -207,6 +218,8 @@ def maybe_generate_with_llm(vendor_name: str, vendor_type: str, evidence_text: s
         )
         resp = client.responses.create(model=model, input=prompt)
         text = resp.output_text
-        return json.loads(text)
+        payload = json.loads(text)
+        payload.setdefault("sources", researched_sources or [])
+        return payload
     except Exception:
-        return generate_assessment(vendor_name, vendor_type, evidence_text)
+        return generate_assessment(vendor_name, vendor_type, evidence_text, researched_sources=researched_sources)

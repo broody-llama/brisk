@@ -15,11 +15,15 @@ function App() {
   const [vendorName, setVendorName] = useState('')
   const [vendorType, setVendorType] = useState('saas')
   const [evidenceText, setEvidenceText] = useState('')
+  const [autonomousResearch, setAutonomousResearch] = useState(true)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [assessment, setAssessment] = useState(null)
 
-  const canGenerate = useMemo(() => vendorName.trim() && evidenceText.trim(), [vendorName, evidenceText])
+  const canGenerate = useMemo(
+    () => vendorName.trim() && (autonomousResearch || evidenceText.trim()),
+    [vendorName, evidenceText, autonomousResearch],
+  )
 
   const onGenerate = async () => {
     setLoading(true)
@@ -28,7 +32,12 @@ function App() {
       const response = await fetch('/api/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ vendor_name: vendorName, vendor_type: vendorType, evidence_text: evidenceText }),
+        body: JSON.stringify({
+          vendor_name: vendorName,
+          vendor_type: vendorType,
+          evidence_text: evidenceText,
+          autonomous_research: autonomousResearch,
+        }),
       })
       if (!response.ok) {
         throw new Error(`Request failed (${response.status})`)
@@ -79,8 +88,17 @@ function App() {
             rows={8}
             value={evidenceText}
             onChange={(e) => setEvidenceText(e.target.value)}
-            placeholder="Paste assessment notes or table rows here..."
+            placeholder={autonomousResearch ? 'Optional: leave blank to let Brisk research vendor sources automatically.' : 'Paste assessment notes or table rows here...'}
           />
+        </label>
+
+        <label className="checkbox">
+          <input
+            type="checkbox"
+            checked={autonomousResearch}
+            onChange={(e) => setAutonomousResearch(e.target.checked)}
+          />
+          Enable autonomous vendor research (recommended)
         </label>
 
         <button disabled={!canGenerate || loading} onClick={onGenerate} type="button">
@@ -95,6 +113,21 @@ function App() {
               <h2>Vendor service description</h2>
               <p>{assessment.vendor_service_description}</p>
             </section>
+
+            {!!assessment.sources?.length && (
+              <section>
+                <h2>Sources</h2>
+                <ul>
+                  {assessment.sources.map((source) => (
+                    <li key={source.url}>
+                      <a href={source.url} target="_blank" rel="noreferrer">
+                        {source.title || source.url}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
 
             <section>
               <h2>Risks</h2>

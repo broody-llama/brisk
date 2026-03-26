@@ -5,12 +5,14 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
 from backend.engine import maybe_generate_with_llm
+from backend.research import gather_vendor_evidence
 
 
 class GenerateRequest(BaseModel):
     vendor_name: str = Field(min_length=1, max_length=200)
     vendor_type: str = Field(min_length=1, max_length=100)
-    evidence_text: str = Field(min_length=1)
+    evidence_text: str = Field(default="")
+    autonomous_research: bool = Field(default=True)
 
 
 app = FastAPI(title="Brisk API", version="0.1.0")
@@ -31,8 +33,16 @@ def health() -> dict[str, str]:
 
 @app.post("/api/generate")
 def generate(request: GenerateRequest) -> dict:
+    evidence_text = request.evidence_text.strip()
+    sources: list[dict[str, str]] = []
+    if request.autonomous_research and not evidence_text:
+        evidence_text, sources = gather_vendor_evidence(request.vendor_name)
+    if not evidence_text:
+        evidence_text = "No evidence provided by user and autonomous research returned no usable sources."
+
     return maybe_generate_with_llm(
         vendor_name=request.vendor_name,
         vendor_type=request.vendor_type,
-        evidence_text=request.evidence_text,
+        evidence_text=evidence_text,
+        researched_sources=sources,
     )

@@ -5,6 +5,7 @@ Brisk is now a standalone internal tool with:
 - **React + Vite frontend** for assessment input and review tables.
 - **FastAPI backend** that generates risk/control tracker drafts from evidence text.
 - Optional **LLM mode** (if `OPENAI_API_KEY` is configured), with deterministic fallback.
+- **Autonomous vendor research mode** that can gather public vendor evidence from web sources when no evidence is pasted.
 
 ## Run locally
 
@@ -38,6 +39,11 @@ export OPENAI_MODEL=gpt-4.1-mini
 ```
 
 Without those env vars, Brisk still works using deterministic evidence parsing.
+
+## Autonomous research mode
+
+- In the UI, keep **Enable autonomous vendor research** checked and leave evidence blank.
+- Brisk will attempt to discover and summarize vendor sources automatically, then generate risks/controls and attach source links in the ticket response.
 
 ## Tests
 

@@ -31,6 +31,12 @@ body { margin: 0; }
 }
 
 label { display: grid; gap: 0.35rem; font-weight: 600; }
+label.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-weight: 500;
+}
 input, select, textarea, button {
   font: inherit;
   border: 1px solid #d1d5db;
