@@ -1,0 +1,67 @@
+<risk_management_ticket>
+<vendor_service_description>
+Vendor {{VENDOR_NAME}} is being evaluated as a third-party service provider to support Block business operations.
+
+Service category: {{VENDOR_TYPE}}
+Business owner: {{BUSINESS_OWNER}}
+Data classification: {{DATA_CLASSIFICATION}}
+
+How the vendor engages with Block:
+- Integration model: {{INTEGRATION_MODEL}}
+- Data access scope: {{DATA_ACCESS_SCOPE}}
+- Business purpose: {{BUSINESS_PURPOSE}}
+</vendor_service_description>
+
+<security_risks>
+- Risk ID: 1
+- Risk Title: {{RISK_1_TITLE}}
+- Description: {{RISK_1_DESCRIPTION}}
+- Severity: {{RISK_1_SEVERITY}}
+- Potential Impact: {{RISK_1_IMPACT}}
+
+- Risk ID: 2
+- Risk Title: {{RISK_2_TITLE}}
+- Description: {{RISK_2_DESCRIPTION}}
+- Severity: {{RISK_2_SEVERITY}}
+- Potential Impact: {{RISK_2_IMPACT}}
+
+- Risk ID: 3
+- Risk Title: {{RISK_3_TITLE}}
+- Description: {{RISK_3_DESCRIPTION}}
+- Severity: {{RISK_3_SEVERITY}}
+- Potential Impact: {{RISK_3_IMPACT}}
+</security_risks>
+
+<controls>
+- Control ID: 1
+- Related Risk ID(s): 1
+- Control Description: {{CONTROL_1_DESCRIPTION}}
+- DRI Status: {{CONTROL_1_STATUS}}
+- Implementation Notes: {{CONTROL_1_NOTES}}
+
+- Control ID: 2
+- Related Risk ID(s): 2
+- Control Description: {{CONTROL_2_DESCRIPTION}}
+- DRI Status: {{CONTROL_2_STATUS}}
+- Implementation Notes: {{CONTROL_2_NOTES}}
+
+- Control ID: 3
+- Related Risk ID(s): 3
+- Control Description: {{CONTROL_3_DESCRIPTION}}
+- DRI Status: {{CONTROL_3_STATUS}}
+- Implementation Notes: {{CONTROL_3_NOTES}}
+</controls>
+
+<assignment_and_tracking>
+- Assigned To: Unassigned - To be assigned to Block team member
+- Created Date: {{CURRENT_DATE}}
+- Due Date: {{DUE_DATE}}
+- Status: Open - Pending Review
+</assignment_and_tracking>
+
+<comments_section>
+Comments and Discussion:
+---
+[No comments yet. Team members can add comments here to discuss risks, controls, and implementation status.]
+</comments_section>
+</risk_management_ticket>
